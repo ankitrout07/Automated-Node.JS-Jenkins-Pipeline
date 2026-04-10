@@ -1,0 +1,12 @@
+node_modules
+npm-debug.log
+docker/
+.git
+.gitignore
+.github
+README.md
+about.md
+implementation_plan.md
+task.md
+Jenkinsfile
+docker-compose.yml

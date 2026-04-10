@@ -1,0 +1,23 @@
+{
+  "name": "automated-node-jenkins-app",
+  "version": "1.0.0",
+  "description": "A high-performance Node.js application for automated CI/CD demo",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "mocha test.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "helmet": "^7.1.0",
+    "pino": "^9.1.0",
+    "pino-pretty": "^11.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.4.1",
+    "mocha": "^10.4.0",
+    "supertest": "^7.0.0"
+  },
+  "author": "Antigravity",
+  "license": "ISC"
+}
