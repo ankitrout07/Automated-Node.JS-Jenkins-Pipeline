@@ -25,11 +25,12 @@ pipeline {
             }
         }
 
-        stage('Security (Gate 2)') {
+        stage('Linting') {
             steps {
-                echo 'Running Trivy Security Scan...'
-                // Running Trivy via Docker container to avoid host dependencies
-                sh "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy image --severity HIGH,CRITICAL ${DOCKER_IMAGE}:${BUILD_TAG}"
+                dir('src') {
+                    echo 'Running code style checks...'
+                    sh 'npm run lint'
+                }
             }
         }
 
@@ -37,6 +38,14 @@ pipeline {
             steps {
                 echo "Building Docker image ${DOCKER_IMAGE}:${BUILD_TAG}..."
                 sh "docker build -t ${DOCKER_IMAGE}:${BUILD_TAG} -t ${DOCKER_IMAGE}:latest -f docker/Dockerfile ."
+            }
+        }
+
+        stage('Security (Gate 2)') {
+            steps {
+                echo 'Running Trivy Security Scan...'
+                // Running Trivy via Docker container to avoid host dependencies
+                sh "docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v $HOME/Library/Caches:/root/.cache/ aquasec/trivy image --severity HIGH,CRITICAL ${DOCKER_IMAGE}:${BUILD_TAG}"
             }
         }
 

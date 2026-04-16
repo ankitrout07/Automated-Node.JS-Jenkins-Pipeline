@@ -1,6 +1,23 @@
 const express = require('express');
 const helmet = require('helmet');
 const pino = require('pino');
+const client = require('prom-client');
+const { v4: uuidv4 } = require('uuid');
+
+// Prometheus Metrics Setup
+const collectDefaultMetrics = client.collectDefaultMetrics;
+const Registry = client.Registry;
+const register = new Registry();
+collectDefaultMetrics({ register });
+
+// Custom Metrics
+const httpRequestCounter = new client.Counter({
+  name: 'http_requests_total',
+  help: 'Total number of HTTP requests',
+  labelNames: ['method', 'route', 'status_code'],
+});
+register.registerMetric(httpRequestCounter);
+
 const logger = pino({
   transport: {
     target: 'pino-pretty'
@@ -10,12 +27,43 @@ const logger = pino({
 const app = express();
 const port = process.env.PORT || 3000;
 
+// Environment Validation
+if (!process.env.NODE_ENV) {
+  logger.warn('NODE_ENV is not set. Defaulting to development.');
+}
+
+// Request Timeout Middleware (30 seconds)
+app.use((req, res, next) => {
+  res.setTimeout(30000, () => {
+    logger.warn({ url: req.url }, 'Request timed out');
+    res.status(408).send('Request Timeout');
+  });
+  next();
+});
+
 // Security Middlewares
 app.use(helmet());
 
-// Logging Middleware
+// Logging & Metrics Middleware
 app.use((req, res, next) => {
-  logger.info({ method: req.method, url: req.url }, 'Incoming Request');
+  const requestId = req.get('X-Request-Id') || uuidv4();
+  req.id = requestId;
+  res.set('X-Request-Id', requestId);
+
+  res.on('finish', () => {
+    httpRequestCounter.inc({
+      method: req.method,
+      route: req.route ? req.route.path : req.url,
+      status_code: res.statusCode
+    });
+  });
+
+  logger.info({
+    requestId: req.id,
+    method: req.method,
+    url: req.url
+  }, 'Incoming Request');
+
   next();
 });
 
@@ -32,18 +80,31 @@ app.get('/healthz', (req, res) => {
   res.status(200).send('OK');
 });
 
+app.get('/metrics', async (req, res) => {
+  res.set('Content-Type', register.contentType);
+  res.end(await register.metrics());
+});
+
 // Error handling
 app.use((err, req, res, next) => {
   logger.error(err);
   res.status(500).json({ error: 'Internal Server Error' });
 });
 
-app.listen(port, () => {
+const server = app.listen(port, () => {
   logger.info(`Server is running on port ${port}`);
 });
 
 // Graceful shutdown
-process.on('SIGTERM', () => {
-  logger.info('SIGTERM received. Shutting down gracefully.');
-  process.exit(0);
-});
+const shutdown = () => {
+  logger.info('Received shutdown signal. Closing server...');
+  server.close(() => {
+    logger.info('Server closed. Exiting process.');
+    process.exit(0);
+  });
+};
+
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
+
+module.exports = app;

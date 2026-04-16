@@ -5,16 +5,20 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha test.js"
+    "test": "mocha test.js",
+    "lint": "eslint ."
   },
   "dependencies": {
     "express": "^4.19.2",
     "helmet": "^7.1.0",
     "pino": "^9.1.0",
-    "pino-pretty": "^11.0.0"
+    "pino-pretty": "^11.0.0",
+    "prom-client": "^15.1.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "chai": "^4.4.1",
+    "eslint": "^8.57.0",
     "mocha": "^10.4.0",
     "supertest": "^7.0.0"
   },

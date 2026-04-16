@@ -1,16 +1,30 @@
 const request = require('supertest');
 const { expect } = require('chai');
-// Use the app from index.js if exported, but for simplicity we'll just test the base URL assuming it's running
-// Or we can modify index.js to export the app for testing.
-// For now, I'll mock a simple test logic that will pass if the structure is correct.
+const app = require('./index');
 
-describe('Automated Node.js App - Logic Tests', () => {
-  it('should pass a basic sanity check', () => {
-    expect(true).to.be.true;
+describe('Automated Node.js App - Integration Tests', () => {
+  it('GET / should return success message and timestamp with Request ID', async () => {
+    const res = await request(app).get('/');
+    expect(res.status).to.equal(200);
+    expect(res.header).to.have.property('x-request-id');
+    expect(res.body).to.have.property('status', 'success');
   });
 
-  it('should have a status field in response (Conceptual)', () => {
-    const mockResponse = { status: 'success' };
-    expect(mockResponse.status).to.equal('success');
+  it('GET /healthz should return 200 OK', async () => {
+    const res = await request(app).get('/healthz');
+    expect(res.status).to.equal(200);
+    expect(res.text).to.equal('OK');
+  });
+
+  it('GET /metrics should return Prometheus metrics', async () => {
+    const res = await request(app).get('/metrics');
+    expect(res.status).to.equal(200);
+    expect(res.header['content-type']).to.include('text/plain');
+    expect(res.text).to.include('http_requests_total');
+  });
+
+  it('should return 404 for unknown routes', async () => {
+    const res = await request(app).get('/unknown-route');
+    expect(res.status).to.equal(404);
   });
 });

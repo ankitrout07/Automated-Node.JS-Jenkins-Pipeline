@@ -12,9 +12,6 @@ RUN npm install
 # Copy source code
 COPY src/ .
 
-# Run tests if needed during build (Optional: usually handled by CI)
-# RUN npm test
-
 # Stage 2: Production Image
 FROM node:24-alpine AS production
 
@@ -24,12 +21,16 @@ ENV PORT=3000
 
 WORKDIR /app
 
-# Install only production dependencies
+# Copy package files first for caching
 COPY src/package*.json ./
-RUN npm install --only=production
 
-# Copy built application from build stage
-COPY --from=build /app/ .
+# Install ONLY production dependencies
+RUN npm ci --only=production
+
+# Copy ONLY necessary source files from build stage (avoiding node_modules)
+COPY --from=build /app/index.js ./
+# If there are other source files, copy them here too. 
+# We avoid COPY --from=build /app/ . to prevent bringing in dev dependencies.
 
 # Security: Run as non-root user
 USER node
