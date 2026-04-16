@@ -82,6 +82,7 @@ Configuration & Documentation
 [DONE] README File Encoding - Fixed encoding from UTF-16 to UTF-8.
 [DONE] No .gitignore - Verified and refined gitignore configuration.
 [DONE] No Environment Files - Created .env.example for documentation.
+[DONE] Usage Guide - Created [HOW_TO_RUN.md](./HOW_TO_RUN.md) for setup instructions.
 No API Documentation - Missing OpenAPI/Swagger docs
 Missing Dependencies - Added ESLint; consider: Prettier, dotenv, joi (validation)
 
