@@ -24,5 +24,8 @@
     "supertest": "^7.0.0"
   },
   "author": "Antigravity",
-  "license": "ISC"
+  "license": "ISC",
+  "overrides": {
+    "picomatch": "4.0.4"
+  }
 }
