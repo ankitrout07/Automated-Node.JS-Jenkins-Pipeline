@@ -17,7 +17,7 @@ FROM node:24-alpine AS production
 
 # Set Environment Variables
 ENV NODE_ENV=production
-ENV PORT=3000
+ENV PORT=3005
 
 WORKDIR /app
 
@@ -37,8 +37,8 @@ USER node
 
 # Health check for Docker engine
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:3000/healthz', (res) => { if (res.statusCode === 200) process.exit(0); else process.exit(1); })"
+  CMD node -e "require('http').get('http://localhost:3005/healthz', (res) => { if (res.statusCode === 200) process.exit(0); else process.exit(1); })"
 
-EXPOSE 3000
+EXPOSE 3005
 
 CMD ["node", "index.js"]
