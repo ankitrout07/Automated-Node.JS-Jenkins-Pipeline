@@ -1,7 +1,10 @@
 # Stage 1: Build & Dependencies
-FROM node:24-alpine AS build
+FROM node:20-alpine AS build
 
 WORKDIR /app
+
+# Update npm to fix potential vulnerabilities in base image tools
+RUN npm install -g npm@latest
 
 # Copy package files
 COPY src/package*.json ./
@@ -13,13 +16,16 @@ RUN npm install
 COPY src/ .
 
 # Stage 2: Production Image
-FROM node:24-alpine AS production
+FROM node:20-alpine AS production
 
 # Set Environment Variables
 ENV NODE_ENV=production
 ENV PORT=3005
 
 WORKDIR /app
+
+# Update npm to fix potential vulnerabilities in base image tools
+RUN npm install -g npm@latest
 
 # Copy package files first for caching
 COPY src/package*.json ./
