@@ -4,6 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = "node-app"
         BUILD_TAG = "v${env.BUILD_NUMBER}"
+        // Dynamic port to allow parallel builds on the same host
+        APP_PORT = "${3000 + (env.BUILD_NUMBER.toInteger() % 100)}"
     }
 
     stages {
@@ -61,20 +63,21 @@ pipeline {
 
         stage('Deployment') {
             steps {
-                echo 'Deploying application using Docker Compose...'
-                sh 'docker-compose down' // Fresh start
-                sh 'docker-compose up -d'
+                echo "Deploying application on port ${APP_PORT}..."
+                // Pass APP_PORT so docker-compose knows which container/port to manage
+                sh "APP_PORT=${APP_PORT} docker-compose down || true"
+                sh "APP_PORT=${APP_PORT} docker-compose up -d"
             }
         }
 
         stage('Verification') {
             steps {
                 script {
-                    echo 'Verifying deployment health...'
+                    echo "Verifying deployment health on port ${APP_PORT}..."
                     // Wait for the container to be ready
                     sleep 5
                     retry(5) {
-                        sh 'curl -f http://localhost:3000/healthz'
+                        sh "curl -f http://localhost:${APP_PORT}/healthz"
                     }
                     echo 'Application is healthy!'
                 }
