@@ -4,8 +4,8 @@ pipeline {
     environment {
         DOCKER_IMAGE = "node-app"
         BUILD_TAG = "v${env.BUILD_NUMBER}"
-        // Dynamic port to allow parallel builds on the same host
-        APP_PORT = "${3000 + (env.BUILD_NUMBER.toInteger() % 100)}"
+        // Dynamic port to allow parallel builds on the same host (base port 3005)
+        APP_PORT = "${3005 + (env.BUILD_NUMBER.toInteger() % 100)}"
     }
 
     stages {

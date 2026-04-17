@@ -17,8 +17,8 @@ jobs:
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "20"
+          cache: "npm"
           cache-dependency-path: src/package-lock.json
 
       - name: 📦 Install Dependencies
@@ -50,12 +50,12 @@ jobs:
       - name: 🛡️ Run Trivy Security Scan
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'node-app:${{ github.sha }}'
-          format: 'table'
-          exit-code: '1' # Fail the build on high/critical vulns
+          image-ref: "node-app:${{ github.sha }}"
+          format: "table"
+          exit-code: "1" # Fail the build on high/critical vulns
           ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
+          vuln-type: "os,library"
+          severity: "CRITICAL,HIGH"
 
   artifact-packaging:
     name: 📦 Package & Build

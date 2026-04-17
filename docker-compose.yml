@@ -3,13 +3,13 @@ services:
     build:
       context: .
       dockerfile: docker/Dockerfile
-    container_name: node-application-${APP_PORT:-3000}
+    container_name: node-application-${APP_PORT:-3005}
     ports:
-      - "${APP_PORT:-3000}:${APP_PORT:-3000}"
+      - "${APP_PORT:-3005}:${APP_PORT:-3005}"
     restart: always
     environment:
       - NODE_ENV=production
-      - PORT=${APP_PORT:-3000}
+      - PORT=${APP_PORT:-3005}
     deploy:
       resources:
         limits:
@@ -21,7 +21,7 @@ services:
         max-size: "10m"
         max-file: "3"
     healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get(`http://localhost:${process.env.PORT || 3000}/healthz`, (res) => { if (res.statusCode === 200) process.exit(0); else process.exit(1); })"]
+      test: ["CMD", "node", "-e", "require('http').get(`http://localhost:${process.env.PORT || 3005}/healthz`, (res) => { if (res.statusCode === 200) process.exit(0); else process.exit(1); })"]
       interval: 30s
       timeout: 10s
       retries: 3

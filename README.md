@@ -36,13 +36,13 @@ A high-performance, production-ready Node.js application featuring a fully autom
 
 ### 1. Run with Docker Compose (Recommended)
 ```bash
-APP_PORT=3000 docker-compose up --build -d
+APP_PORT=3005 docker-compose up --build -d
 ```
 
 ### 2. Access the Application
-- **Dashboard**: [http://localhost:3000](http://localhost:3000)
-- **API Health**: [http://localhost:3000/healthz](http://localhost:3000/healthz)
-- **Metrics**: [http://localhost:3000/metrics](http://localhost:3000/metrics)
+- **Dashboard**: [http://localhost:3005](http://localhost:3005)
+- **API Health**: [http://localhost:3005/healthz](http://localhost:3005/healthz)
+- **Metrics**: [http://localhost:3005/metrics](http://localhost:3005/metrics)
 
 ---
 
