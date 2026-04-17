@@ -29,7 +29,7 @@ RUN npm ci --only=production
 
 # Copy ONLY necessary source files from build stage (avoiding node_modules)
 COPY --from=build /app/index.js ./
-# If there are other source files, copy them here too. 
+COPY --from=build /app/public ./public
 # We avoid COPY --from=build /app/ . to prevent bringing in dev dependencies.
 
 # Security: Run as non-root user

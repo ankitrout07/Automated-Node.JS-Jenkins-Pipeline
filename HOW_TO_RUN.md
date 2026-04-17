@@ -44,13 +44,14 @@ This is the recommended way to run the application as it mirrors the production 
 
 1. **Build and start the containers**:
    ```bash
-   docker-compose up --build -d
+   APP_PORT=3000 docker-compose up --build -d
    ```
 
 2. **Verify it's running**:
-   - Web App: [http://localhost:3000](http://localhost:3000)
-   - Health Check: [http://localhost:3000/healthz](http://localhost:3000/healthz)
-   - Prometheus Metrics: [http://localhost:3000/metrics](http://localhost:3000/metrics)
+   - **Operational Dashboard**: [http://localhost:3000](http://localhost:3000)
+   - **JSON API**: [http://localhost:3000/api](http://localhost:3000/api)
+   - **Health Check**: [http://localhost:3000/healthz](http://localhost:3000/healthz)
+   - **Prometheus Metrics**: [http://localhost:3000/metrics](http://localhost:3000/metrics)
 
 3. **Check logs**:
    ```bash

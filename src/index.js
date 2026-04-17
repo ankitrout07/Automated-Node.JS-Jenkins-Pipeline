@@ -3,6 +3,7 @@ const helmet = require('helmet');
 const pino = require('pino');
 const client = require('prom-client');
 const { v4: uuidv4 } = require('uuid');
+const path = require('path');
 
 // Prometheus Metrics Setup
 const collectDefaultMetrics = client.collectDefaultMetrics;
@@ -67,12 +68,16 @@ app.use((req, res, next) => {
   next();
 });
 
-// Routes
-app.get('/', (req, res) => {
+// Static Files
+app.use(express.static(path.join(__dirname, 'public')));
+
+// API Routes
+app.get('/api', (req, res) => {
   res.json({
     status: 'success',
-    message: 'Welcome to the Automated Node.js Jenkins Pipeline!',
-    timestamp: new Date().toISOString()
+    message: 'Welcome to the Automated Node.js Jenkins Pipeline API!',
+    timestamp: new Date().toISOString(),
+    version: '1.0.0'
   });
 });
 

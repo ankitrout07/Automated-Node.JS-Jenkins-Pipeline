@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pipeline Dashboard | Antigravity AI</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+    <div class="glass-container">
+        <nav>
+            <div class="logo">
+                <i class="fas fa-atom"></i>
+                <span>Pipeline<strong>Core</strong></span>
+            </div>
+            <div class="status-badge" id="app-status">
+                <span class="dot"></span> Online
+            </div>
+        </nav>
+
+        <header>
+            <h1>Operational Dashboard</h1>
+            <p>Real-time analytics for your automated Jenkins pipeline</p>
+        </header>
+
+        <main>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-bolt"></i></div>
+                    <div class="info">
+                        <span class="label">Response Time</span>
+                        <h2 id="response-time">--ms</h2>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-microchip"></i></div>
+                    <div class="info">
+                        <span class="label">Memory Usage</span>
+                        <h2 id="memory-usage">-- MB</h2>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="icon"><i class="fas fa-layer-group"></i></div>
+                    <div class="info">
+                        <span class="label">API Version</span>
+                        <h2 id="app-version">v1.0.0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="details-section">
+                <div class="card terminal">
+                    <div class="card-header">
+                        <span><i class="fas fa-terminal"></i> System Health</span>
+                        <span class="pulse">Live</span>
+                    </div>
+                    <div class="terminal-body" id="system-logs">
+                        <p class="log-entry">> Initializing monitoring suite...</p>
+                        <p class="log-entry">> Connecting to Prometheus registry...</p>
+                    </div>
+                </div>
+
+                <div class="card info-panel">
+                    <h3>Environment Details</h3>
+                    <ul class="env-list">
+                        <li><strong>Platform:</strong> Node.js v20+</li>
+                        <li><strong>Containerization:</strong> Docker Compose</li>
+                        <li><strong>Monitoring:</strong> Prometheus Ready</li>
+                        <li><strong>Security:</strong> Helmet & Trivy</li>
+                    </ul>
+                    <button class="btn-primary" id="refresh-btn">
+                        <i class="fas fa-sync-alt"></i> Force Refresh
+                    </button>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Automated Jenkins Pipeline Demo &copy; 2024 | Powered by Antigravity AI Engine</p>
+        </footer>
+    </div>
+
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>

@@ -1,74 +1,72 @@
-# Automated-Jenkins
+# 🚀 Automated Node.js Jenkins Pipeline
 
-Project Overview: Automated Node.js Jenkins Pipeline
-This is a CI/CD demonstration project featuring a fully automated Node.js application with Jenkins pipeline integration. Here's what I found:
+[![Build Status](https://img.shields.io/badge/jenkins-pipeline-blue.svg)](http://localhost:8080)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![Platform: Node.js](https://img.shields.io/badge/Platform-Node.js%2024-green.svg)](https://nodejs.org/)
 
-Project Purpose
-A high-performance Node.js app designed to showcase:
+A high-performance, production-ready Node.js application featuring a fully automated CI/CD pipeline, security gates, and a stunning real-time operational dashboard.
 
-Automated CI/CD pipeline with Jenkins
-Docker containerization & Docker Compose orchestration
-Security scanning and testing gates
-Production-ready best practices
-Tech Stack
-Runtime: Node.js 24 (Alpine Linux)
-Framework: Express.js
-Logging: Pino with pretty formatting
-Security: Helmet middleware
-Testing: Mocha + Chai + Supertest
-Containerization: Docker (multi-stage build)
-Orchestration: Docker Compose
-Key Components
-index.js: Express server with 3 endpoints
+---
 
-GET / - Welcome endpoint with status & timestamp
-GET /healthz - Health check for container liveness probe
-Error handling & graceful shutdown
-package.json: Dependencies and npm scripts
+## ✨ Features
 
-npm start - Run application
-npm test - Run Mocha tests
-Jenkinsfile: 5-stage CI/CD pipeline
+- **🎨 Stunning Operational Dashboard**: A modern, glassmorphic UI for real-time health monitoring and metrics visualization.
+- **🏗️ Automated CI/CD**: Comprehensive `Jenkinsfile` including prep, testing, linting, packaging, security scanning, and verified deployment.
+- **🐳 Dockerized Architecture**: Multi-stage production builds with non-root security and resource limits.
+- **🛡️ Robust Security**: Integrated **Trivy** security scanning and **Helmet.js** protection.
+- **📊 Observability**: Built-in **Prometheus** metrics, structured **Pino** logging, and request tracing.
+- **⚡ Dynamic Port Support**: Intelligent port allocation to allow multiple instances on a single host.
 
-Workspace Prep: Clean & checkout code
-Testing (Gate 1): Install deps, run tests
-Security (Gate 2): Trivy vulnerability scan
-Packaging: Build Docker image with tags
-Deployment: Deploy via docker-compose
-Dockerfile: Multi-stage production build
+---
 
-Build stage: Tests & dependencies
-Production stage: Non-root user, health checks, 512MB memory limit
-docker-compose.yml: Container orchestration
+## 🛠️ Technology Stack
 
-Exposes port 3000, resource limits, logging configuration
-test.js: Basic test structure (currently placeholder tests)
+- **Runtime**: Node.js 24 (Alpine Linux)
+- **Framework**: Express.js
+- **UI**: Vanilla HTML5/CSS3 (Glassmorphism)
+- **Security**: Helmet, Trivy
+- **Testing**: Mocha, Chai, Supertest
+- **Artifacts**: JUnit Test Reports
+- **Containerization**: Docker & Docker Compose
 
--------------------------------------------------------------------
+---
 
-# to do list (improvisation)
+## 🚦 Quick Start
 
-Security Issues
-[DONE] CI/CD Security Gap - Security scanning now happens after Docker build.
-No Input Validation - Missing request validation/sanitization middleware
-Dockerfile Security - No non-root user, no resource limits in Dockerfile specification
-Secret Management - No support for secrets or sensitive configuration
+### 1. Run with Docker Compose (Recommended)
+```bash
+APP_PORT=3000 docker-compose up --build -d
+```
 
+### 2. Access the Application
+- **Dashboard**: [http://localhost:3000](http://localhost:3000)
+- **API Health**: [http://localhost:3000/healthz](http://localhost:3000/healthz)
+- **Metrics**: [http://localhost:3000/metrics](http://localhost:3000/metrics)
 
-DevOps & CI/CD
-[DONE] Graceful Shutdown - SIGTERM and SIGINT handlers now close the server properly.
-[DONE] Linting Missing - Added ESLint and a dedicated 'Linting' stage to the pipeline.
-No Artifact Storage - Pipeline doesn't save build artifacts
-Limited Error Handling - Missing post-deployment verification
-No Pre-commit Hooks - No automated quality checks before commit
+---
 
+## 📂 Project Structure
 
-Configuration & Documentation
-No API Documentation - Missing OpenAPI/Swagger docs
-Missing Dependencies - Added ESLint; consider: Prettier, dotenv, joi (validation)
+```text
+├── src/
+│   ├── public/         # Dashboard UI (HTML, CSS, JS)
+│   ├── index.js        # Main Express Server
+│   ├── test.js         # Integration Tests
+│   └── package.json    # Project Manifest
+├── docker/
+│   └── Dockerfile      # Multi-stage Production Build
+├── Jenkinsfile         # 7-stage CI/CD Pipeline Definition
+└── docker-compose.yml  # Local Orchestration
+```
 
+---
 
-Docker & Deployment
-No Volume Configuration - Missing persistent storage/log volumes
-Limited Compose Configuration - No networks, volumes, or service dependencies
-[DONE] No Build Caching - Reorganized Dockerfile layers (copying package files before source) to maximize layer caching.
+## 🏗️ Jenkins Pipeline Stages
+
+1. **Workspace Prep**: Environment cleaning and source checkout.
+2. **Testing (Gate 1)**: Automated testing with JUnit report generation.
+3. **Linting**: Code style verification via ESLint.
+4. **Packaging**: Docker image building and tagging.
+5. **Security (Gate 2)**: Trivy container vulnerability scanning.
+6. **Deployment**: Automated delivery via Docker Compose.
+7. **Verification**: Post-deployment health-check with auto-rollback/reporting.
