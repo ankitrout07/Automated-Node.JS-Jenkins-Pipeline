@@ -10,6 +10,7 @@ A high-performance, production-ready Node.js application featuring a fully autom
 
 ## ✨ Features
 
+- **✨ Dual CI/CD Support**: Fully configured for both **Jenkins** (Jenkinsfile) and **GitHub Actions** (.github/workflows).
 - **🎨 Stunning Operational Dashboard**: A modern, glassmorphic UI for real-time health monitoring and metrics visualization.
 - **🏗️ Automated CI/CD**: Comprehensive `Jenkinsfile` including prep, testing, linting, packaging, security scanning, and verified deployment.
 - **🐳 Dockerized Architecture**: Multi-stage production builds with non-root security and resource limits.

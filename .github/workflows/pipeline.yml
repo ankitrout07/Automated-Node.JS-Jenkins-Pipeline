@@ -1,0 +1,91 @@
+name: 🚀 Pipeline Core
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  quality-control:
+    name: 🧪 Quality & Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: src/package-lock.json
+
+      - name: 📦 Install Dependencies
+        run: |
+          cd src
+          npm ci
+
+      - name: 🔍 Run Linting
+        run: |
+          cd src
+          npm run lint
+
+      - name: 🧪 Run Integration Tests
+        run: |
+          cd src
+          npm test
+
+  security-check:
+    name: 🛡️ Security Gates
+    needs: quality-control
+    runs-on: ubuntu-latest
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🐳 Build Image for Scan
+        run: docker build -t node-app:${{ github.sha }} -f docker/Dockerfile .
+
+      - name: 🛡️ Run Trivy Security Scan
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'node-app:${{ github.sha }}'
+          format: 'table'
+          exit-code: '1' # Fail the build on high/critical vulns
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+
+  artifact-packaging:
+    name: 📦 Package & Build
+    needs: quality-control
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - name: 📥 Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 🐳 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🏗️ Build Production Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: docker/Dockerfile
+          push: false # Toggle to true if you add repository secrets for Docker Hub/GHCR
+          tags: |
+            node-app:latest
+            node-app:${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: 📄 Archive Build Version
+        run: echo "${{ github.sha }}" > build_info.txt
+
+      - name: 📤 Upload Build Metadata
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-metadata
+          path: build_info.txt
