@@ -96,17 +96,24 @@ app.use((err, req, res, _next) => {
   res.status(500).json({ error: 'Internal Server Error' });
 });
 
-const server = app.listen(port, () => {
-  logger.info(`Server is running on port ${port}`);
-});
+let server;
+if (require.main === module) {
+  server = app.listen(port, () => {
+    logger.info(`Server is running on port ${port}`);
+  });
+}
 
 // Graceful shutdown
 const shutdown = () => {
   logger.info('Received shutdown signal. Closing server...');
-  server.close(() => {
-    logger.info('Server closed. Exiting process.');
+  if (server) {
+    server.close(() => {
+      logger.info('Server closed. Exiting process.');
+      process.exit(0);
+    });
+  } else {
     process.exit(0);
-  });
+  }
 };
 
 process.on('SIGTERM', shutdown);

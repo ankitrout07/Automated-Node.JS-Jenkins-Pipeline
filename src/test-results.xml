@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="Mocha Tests" time="0.033" tests="5" failures="0">
+  <testsuite name="Root Suite" timestamp="2026-04-17T14:54:16" tests="0" time="0.000" failures="0">
+  </testsuite>
+  <testsuite name="Automated Node.js App - Integration Tests" timestamp="2026-04-17T14:54:16" tests="5" file="/home/ankit/git/Automated-Node.JS-Jenkins-Pipeline/src/test.js" time="0.032" failures="0">
+    <testcase name="Automated Node.js App - Integration Tests GET / should return the operational dashboard (HTML)" time="0.017" classname="GET / should return the operational dashboard (HTML)">
+    </testcase>
+    <testcase name="Automated Node.js App - Integration Tests GET /api should return success message and version JSON" time="0.004" classname="GET /api should return success message and version JSON">
+    </testcase>
+    <testcase name="Automated Node.js App - Integration Tests GET /healthz should return 200 OK" time="0.002" classname="GET /healthz should return 200 OK">
+    </testcase>
+    <testcase name="Automated Node.js App - Integration Tests GET /metrics should return Prometheus metrics" time="0.004" classname="GET /metrics should return Prometheus metrics">
+    </testcase>
+    <testcase name="Automated Node.js App - Integration Tests should return 404 for unknown routes" time="0.002" classname="should return 404 for unknown routes">
+    </testcase>
+  </testsuite>
+</testsuites>
