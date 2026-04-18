@@ -90,6 +90,18 @@ app.get('/metrics', async (req, res) => {
   res.end(await register.metrics());
 });
 
+const os = require('os');
+app.get('/api/system', (req, res) => {
+  res.json({
+    uptime: os.uptime(),
+    platform: os.platform(),
+    loadavg: os.loadavg(),
+    freeMem: os.freemem(),
+    totalMem: os.totalmem(),
+    cpus: os.cpus().length
+  });
+});
+
 // Error handling
 app.use((err, req, res, _next) => {
   logger.error(err);

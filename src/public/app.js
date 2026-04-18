@@ -44,9 +44,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
+    const fetchSystemStats = async () => {
+        try {
+            const res = await fetch('/api/system');
+            const data = await res.json();
+            
+            const uptime = document.getElementById('system-uptime');
+            const cpuLoad = document.getElementById('cpu-load');
+            
+            // Format uptime (seconds to H:M:S)
+            const hours = Math.floor(data.uptime / 3600);
+            const minutes = Math.floor((data.uptime % 3600) / 60);
+            uptime.textContent = `${hours}h ${minutes}m`;
+            
+            cpuLoad.textContent = `${data.loadavg[0].toFixed(2)}`;
+            
+            addLog(`System stats synced: ${data.platform} detected`);
+        } catch (error) {
+            addLog(`Error fetching system stats: ${error.message}`);
+        }
+    };
+
     const updateAll = () => {
         fetchData();
         fetchMetrics();
+        fetchSystemStats();
     };
 
     refreshBtn.addEventListener('click', () => {

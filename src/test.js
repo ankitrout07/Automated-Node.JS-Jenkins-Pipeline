@@ -31,6 +31,14 @@ describe('Automated Node.js App - Integration Tests', () => {
     expect(res.text).to.include('http_requests_total');
   });
 
+  it('GET /api/system should return system information', async () => {
+    const res = await request(app).get('/api/system');
+    expect(res.status).to.equal(200);
+    expect(res.body).to.have.property('uptime');
+    expect(res.body).to.have.property('platform');
+    expect(res.body).to.have.property('loadavg');
+  });
+
   it('should return 404 for unknown routes', async () => {
     const res = await request(app).get('/unknown-route');
     expect(res.status).to.equal(404);
