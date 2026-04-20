@@ -26,6 +26,11 @@ jobs:
           cd src
           npm ci
 
+      - name: 🛡️ Run Dependency Audit
+        run: |
+          cd src
+          npm audit --audit-level=high
+
       - name: 🔍 Run Linting
         run: |
           cd src
@@ -48,7 +53,7 @@ jobs:
         run: docker build -t node-app:${{ github.sha }} -f docker/Dockerfile .
 
       - name: 🛡️ Run Trivy Security Scan
-        uses: aquasecurity/trivy-action@master
+        uses: aquasecurity/trivy-action@0.18.0
         with:
           image-ref: "node-app:${{ github.sha }}"
           format: "table"
